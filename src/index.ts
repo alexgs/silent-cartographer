@@ -2,23 +2,20 @@ import * as Three from 'three';
 
 const ROOT_ID = 'cartographer-v1-root';
 
-let camera: Three.PerspectiveCamera;
-let mesh: Three.Mesh;
-let renderer: Three.WebGLRenderer;
-let root: HTMLDivElement | null;
-let scene: Three.Scene;
+let camera: Three.PerspectiveCamera | null = null;
+let mesh: Three.Mesh | null = null;
+let renderer: Three.WebGLRenderer | null = null;
+let root: HTMLDivElement | null = null;
+let scene: Three.Scene | null = null;
 
-const clientHeight = 500;
+function handleWindowResize(): void {
+  if (!camera || !renderer || !root) {
+    throw new Error();
+  }
 
-function animate(): void {
-  requestAnimationFrame( animate );
-
-  // Increase the mesh's rotation each frame
-  mesh.rotation.z += 0.01;
-  mesh.rotation.x += 0.01;
-  mesh.rotation.y += 0.01;
-
-  renderer.render( scene, camera );
+  camera.aspect = root.clientWidth / root.clientHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize( root.clientWidth, root.clientHeight );
 }
 
 function init(): void {
@@ -33,7 +30,7 @@ function init(): void {
 
   // Camera
   const fov = 35;
-  const aspect = root.clientWidth / clientHeight;
+  const aspect = root.clientWidth / root.clientHeight;
   const near = 0.1;
   const far = 100;
   camera = new Three.PerspectiveCamera(fov, aspect, near, far);
@@ -52,10 +49,33 @@ function init(): void {
 
   // Render
   renderer = new Three.WebGLRenderer({ antialias: true });
-  renderer.setSize(root.clientWidth, clientHeight);
+  renderer.setSize(root.clientWidth, root.clientHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
   root.appendChild(renderer.domElement);
+
+  renderer.setAnimationLoop(() => {
+    update();
+    render();
+  });
 }
 
+function render(): void {
+  if (!renderer || !scene || !camera) {
+    throw new Error();
+  }
+  renderer.render( scene, camera );
+}
+
+function update(): void {
+  if (!mesh) {
+    throw new Error();
+  }
+
+  // Increase the mesh's rotation each frame
+  mesh.rotation.z += 0.01;
+  mesh.rotation.x += 0.01;
+  mesh.rotation.y += 0.01;
+}
+
+window.addEventListener( 'resize', handleWindowResize );
 init();
-animate();
