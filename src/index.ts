@@ -1,8 +1,10 @@
 import * as Three from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 const ROOT_ID = 'cartographer-v1-root';
 
 let camera: Three.PerspectiveCamera | null = null;
+let controls: OrbitControls | null = null;
 let mesh: Three.Mesh | null = null;
 let renderer: Three.WebGLRenderer | null = null;
 let root: HTMLDivElement | null = null;
@@ -15,14 +17,20 @@ function createCamera(): void {
   const near = 0.1;
   const far = 100;
   camera = new Three.PerspectiveCamera(fov, aspect, near, far);
-  camera.position.set(0, 0, 10);
+  camera.position.set(-4, 4, 10);
+}
+
+function createControls(): void {
+  if (!camera || !root) { throw new Error(); }
+  controls = new OrbitControls(camera, root);
 }
 
 function createLights(): void {
   if (!scene) { throw new Error(); }
-  const light = new Three.DirectionalLight( 0xffffff, 5.0 );
-  light.position.set( 10, 10, 10 );
-  scene.add( light );
+  const ambientLight = new Three.HemisphereLight(0xddeeff, 0x202020, 5);
+  const mainLight = new Three.DirectionalLight( 0xffffff, 5.0 );
+  mainLight.position.set( 10, 10, 10 );
+  scene.add( ambientLight, mainLight );
 }
 
 function createMeshes(): void {
@@ -38,6 +46,8 @@ function createRenderer(): void {
   renderer = new Three.WebGLRenderer({ antialias: true });
   renderer.setSize(root.clientWidth, root.clientHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.physicallyCorrectLights = true;
+
   root.appendChild(renderer.domElement);
 }
 
@@ -59,6 +69,7 @@ function init(): void {
   scene.background = new Three.Color('skyblue');
 
   createCamera();
+  createControls();
   createLights();
   createMeshes();
   createRenderer();
@@ -76,12 +87,7 @@ function render(): void {
 }
 
 function update(): void {
-  if (!mesh) { throw new Error(); }
-
-  // Increase the mesh's rotation each frame
-  mesh.rotation.z += 0.01;
-  mesh.rotation.x += 0.01;
-  mesh.rotation.y += 0.01;
+  // Currently empty
 }
 
 window.addEventListener( 'resize', handleWindowResize );
