@@ -6,7 +6,12 @@
         "modules": false
       }
     ],
-    "@babel/typescript"
+    "@babel/react",
+    "@babel/typescript",
+    "@emotion/babel-preset-css-prop"
   ],
-  "plugins": []
+  "plugins": [
+    "emotion",
+    "react-hot-loader/babel"
+  ]
 }
