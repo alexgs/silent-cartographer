@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="afa85614-61ac-4390-a096-0e0f938bf2bb" name="Ubuntu [WSL]" url="http://localhost:3000/">
+        <fileTransfer mountedRoot="U:\home\alexgs\projects\silent-cartographer" accessType="MOUNT" port="0" />
+      </webServer>
+    </option>
+  </component>
+</project>
