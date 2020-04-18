@@ -1,14 +1,17 @@
 import * as Three from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { GLTF, GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 const ROOT_ID = 'cartographer-v1-root';
-const SCALE_FACTOR = 0.1;
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const MAP_URL = '/images/rickedness-map.jpg'; // TODO Find a map to use here
+const TEXTURE_URL = '/images/texture.jpg';
 
 const mixers: Three.AnimationMixer[] = [];
 const clock = new Three.Clock();
 
 let camera: Three.PerspectiveCamera | null = null;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 let controls: OrbitControls | null = null;
 let renderer: Three.WebGLRenderer | null = null;
 let root: HTMLDivElement | null = null;
@@ -20,10 +23,10 @@ function createCamera(): void {
   }
   const fov = 50;
   const aspect = root.clientWidth / root.clientHeight;
-  const near = 10;
-  const far = 100;
+  const near = 1;
+  const far = 1000;
   camera = new Three.PerspectiveCamera(fov, aspect, near, far);
-  camera.position.set(-15, 15, 50);
+  camera.position.set(-15, 15, 500);
 }
 
 function createControls(): void {
@@ -41,6 +44,27 @@ function createLights(): void {
   const mainLight = new Three.DirectionalLight(0xffffff, 5.0);
   mainLight.position.set(10, 10, 10);
   scene.add(ambientLight, mainLight);
+}
+
+function createMap(): void {
+  if (!scene) {
+    throw new Error();
+  }
+  const geometry = new Three.BoxBufferGeometry(1, 200, 800);
+  const image = new Three.TextureLoader().load(TEXTURE_URL);
+  const mapMaterial = new Three.MeshBasicMaterial({ map: image });
+  const defaultMaterial = new Three.MeshBasicMaterial({ color: 'darkblue' });
+  const map = new Three.Mesh(geometry, [
+    mapMaterial,
+    defaultMaterial,
+    defaultMaterial,
+    defaultMaterial,
+    defaultMaterial,
+    defaultMaterial,
+  ]);
+  map.receiveShadow = true;
+  map.position.set(0, 0, 0);
+  scene.add(map);
 }
 
 function createRenderer(): void {
@@ -77,7 +101,7 @@ function init(): void {
   createCamera();
   createControls();
   createLights();
-  loadModels();
+  createMap();
   createRenderer();
 
   if (!renderer) {
@@ -87,56 +111,6 @@ function init(): void {
     update();
     render();
   });
-}
-
-function loadModels(): void {
-  const loader = new GLTFLoader();
-
-  const handleLoad = (gltf: GLTF, position: Three.Vector3): void => {
-    if (!scene) {
-      throw new Error();
-    }
-
-    const model = gltf.scene.children[0];
-    model.position.copy(position);
-
-    const scaleM = model.matrix
-      .clone()
-      .makeScale(SCALE_FACTOR, SCALE_FACTOR, SCALE_FACTOR);
-    model.applyMatrix4(scaleM);
-
-    const animation = gltf.animations[0];
-
-    const mixer = new Three.AnimationMixer(model);
-    mixers.push(mixer);
-
-    const action = mixer.clipAction(animation);
-    action.play();
-
-    scene.add(model);
-  };
-
-  const FUDGE = 3;
-  const parrotPosition = new Three.Vector3(0, 0, (2.5 * FUDGE) / SCALE_FACTOR);
-  loader.load('models/parrot.glb', (gltf: GLTF) =>
-    handleLoad(gltf, parrotPosition),
-  );
-  const flamingoPosition = new Three.Vector3(
-    (7.5 * FUDGE) / SCALE_FACTOR,
-    0,
-    (-10 * FUDGE) / SCALE_FACTOR,
-  );
-  loader.load('models/flamingo.glb', (gltf: GLTF) =>
-    handleLoad(gltf, flamingoPosition),
-  );
-  const storkPosition = new Three.Vector3(
-    0,
-    (-2.5 * FUDGE) / SCALE_FACTOR,
-    (-10 * FUDGE) / SCALE_FACTOR,
-  );
-  loader.load('models/stork.glb', (gltf: GLTF) =>
-    handleLoad(gltf, storkPosition),
-  );
 }
 
 function render(): void {
