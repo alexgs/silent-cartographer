@@ -23,7 +23,7 @@
   "homepage": "https://github.com/alexgs/chronometer",
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint",
+      "pre-commit": "npm run prettier",
       "pre-merge-commit": "npm run lint",
       "pre-push": "npm run lint"
     }
