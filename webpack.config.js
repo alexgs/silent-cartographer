@@ -7,11 +7,10 @@ const path = require('path');
 module.exports = {
   devServer: {
     contentBase: './dist',
-    hot: true,
     port: 3000,
   },
   devtool: 'source-map',
-  entry: ['react-hot-loader/patch', './src/index.tsx'],
+  entry: ['./src/index.ts'],
   mode: 'development',
   module: {
     rules: [

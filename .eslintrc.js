@@ -5,7 +5,7 @@ module.exports = {
     tsconfigRootDir: __dirname,
     project: ['./tsconfig.json'],
   },
-  plugins: ['@typescript-eslint', 'emotion', 'import', 'react', 'react-hooks'],
+  plugins: ['@typescript-eslint', 'import'],
   settings: {
     'import/internal-regex': '^src/|^types/',
     react: {
@@ -17,13 +17,9 @@ module.exports = {
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
-    'plugin:react/recommended',
   ],
   rules: {
     '@typescript-eslint/no-use-before-define': 'off',
-    'emotion/no-vanilla': 'error',
-    'emotion/styled-import': 'error',
-    'emotion/syntax-preference': ['error', 'object'],
     'import/order': [
       'error',
       {
@@ -39,8 +35,6 @@ module.exports = {
         'newlines-between': 'always',
       },
     ],
-    'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'off',
   },
   overrides: [
     {
