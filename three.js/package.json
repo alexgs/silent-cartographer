@@ -1,6 +1,6 @@
 {
-  "name": "silent-cartographer",
-  "description": "Experiments with three.js toward a virtual tabletop",
+  "name": "silent-cartographer.threejs",
+  "description": "Experiments with Three.js toward a virtual tabletop",
   "version": "0.1.0",
   "author": {
     "email": "alex.nebula99@gmail.com",
