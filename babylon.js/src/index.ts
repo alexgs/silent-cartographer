@@ -8,6 +8,8 @@ import {
   Vector3,
 } from 'babylonjs';
 
+import { addLabelToMesh } from './gui';
+
 const CANVAS_ID = 'cartographer-v1-canvas';
 
 function getCanvas(): HTMLCanvasElement {
@@ -45,6 +47,8 @@ function createScene(): Scene {
     { diameter: 1 },
     scene,
   );
+
+  addLabelToMesh(sphere);
 
   return scene;
 }
