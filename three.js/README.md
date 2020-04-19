@@ -1,6 +1,8 @@
-# Silent Cartographer
+# Three.js
 
-Playing around with **three.js** to make a very basic virtual tabletop.
+Playing around with **[Three.js][1]** to make a very basic virtual tabletop.
+
+[1]: https://threejs.org/
 
 **To Do**
 
