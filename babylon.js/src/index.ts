@@ -4,6 +4,7 @@ import {
   HemisphericLight,
   Mesh,
   MeshBuilder,
+  PointLight,
   Scene,
   Vector3,
 } from 'babylonjs';
@@ -28,9 +29,9 @@ function createScene(): Scene {
 
   const camera: ArcRotateCamera = new ArcRotateCamera(
     'Camera',
+    -Math.PI / 2,
     Math.PI / 2,
-    Math.PI / 2,
-    2,
+    4,
     Vector3.Zero(),
     scene,
   );
@@ -41,14 +42,20 @@ function createScene(): Scene {
     new Vector3(1, 1, 0),
     scene,
   );
-
-  const sphere: Mesh = MeshBuilder.CreateSphere(
-    'sphere',
-    { diameter: 1 },
+  const light2: PointLight = new PointLight(
+    'light2',
+    new Vector3(0, 1, -1),
     scene,
   );
 
-  addLabelToMesh(sphere);
+  // May eventually want to change this to `MeshBuilder.CreateGround`
+  const plane = MeshBuilder.CreatePlane(
+    'plane',
+    { height: 2, width: 1, sideOrientation: Mesh.DOUBLESIDE },
+    scene,
+  );
+
+  addLabelToMesh(plane);
 
   return scene;
 }
