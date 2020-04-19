@@ -43,7 +43,11 @@
     "prettier:fix": "prettier --write \"**/*.{js,ts,tsx}\"",
     "type": "tsc --noEmit"
   },
-  "dependencies": {},
+  "dependencies": {
+    "babylonjs": "^4.1.0",
+    "babylonjs-gui": "^4.1.0",
+    "babylonjs-loaders": "^4.1.0"
+  },
   "devDependencies": {
     "@babel/core": "^7.8.7",
     "@babel/preset-env": "^7.8.7",
