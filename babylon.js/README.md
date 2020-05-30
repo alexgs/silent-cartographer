@@ -11,3 +11,9 @@ Playing around with **[Babylon.js][1]** to make a very basic virtual tabletop.
 - [ ] Load a 3D model
 - [ ] Enable selecting and deselecting the model
 - [ ] Enable moving the model around on the map image
+
+## References
+
+- Map ["The Lost Temple of Aphosh the Haunted"][2] by Dyson Logos, used under license
+
+[2]: https://dysonlogos.blog/2020/03/07/lost-temple/
